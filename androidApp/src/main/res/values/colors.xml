@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="color_content_bg">#3e4e5c</color>
+
+  <color name="color_primary">#fcba03</color>
+  <color name="color_primary_dark">#a48b2a</color>
+
+  <color name="color_addend_bg">@color/color_primary</color>
+  <color name="color_addend_pressed_bg">@color/color_primary_dark</color>
+  <color name="color_addend_text">@android:color/white</color>
+
+  <color name="color_sum_bg">@color/color_primary</color>
+  <color name="color_sum_text">@android:color/white</color>
+
+  <color name="color_target_bg">@color/color_primary</color>
+  <color name="color_target_text">@android:color/white</color>
+
+  <color name="color_alert_button_bg">@color/color_primary</color>
+  <color name="color_alert_button_text">@android:color/white</color>
+
+  <color name="color_default_text">@android:color/white</color>
+
+  <color name="color_alert_success_color">#74c470</color>
+  <color name="color_alert_failure_color">#dd3d2f</color>
+</resources>

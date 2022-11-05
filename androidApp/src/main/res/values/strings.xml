@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">Summy</string>
+  <string name="alert_button_restart">Play again</string>
+
+  <string name="alert_success">You won this round</string>
+  <string name="alert_failure">Congratulations, you failed</string>
+</resources>

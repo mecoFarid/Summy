@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="game_screen_padding">16dp</dimen>
+
+  <dimen name="addend_text_size">24sp</dimen>
+  <dimen name="addend_padding">24dp</dimen>
+  <dimen name="addend_elevation">10dp</dimen>
+  <dimen name="addend_bottom_spacing">50dp</dimen>
+
+  <dimen name="sum_text_size">42sp</dimen>
+  <dimen name="sum_padding">56dp</dimen>
+  <dimen name="sum_elevation">32dp</dimen>
+  <dimen name="sum_top_spacing">150dp</dimen>
+
+  <dimen name="target_text_size">24sp</dimen>
+  <dimen name="target_padding_vertical">8dp</dimen>
+  <dimen name="target_padding_horizontal">32dp</dimen>
+  <dimen name="target_elevation">10dp</dimen>
+  <dimen name="target_corner_radius">8dp</dimen>
+
+  <dimen name="dialog_inset_horizontal">32dp</dimen>
+  <dimen name="dialog_corner_radius">40dp</dimen>
+
+  <dimen name="dialog_title_padding">24dp</dimen>
+  <dimen name="dialog_title_size">14sp</dimen>
+
+  <dimen name="dialog_button_horizontal_padding">48dp</dimen>
+  <dimen name="dialog_button_vertical_padding">12dp</dimen>
+  <dimen name="dialog_button_size">16sp</dimen>
+  <dimen name="dialog_button_radius">50dp</dimen>
+  <dimen name="dialog_button_elevation">5dp</dimen>
+  <dimen name="dialog_button_bottom_spacing">20dp</dimen>
+
+  <dimen name="dialog_image_size">100dp</dimen>
+</resources>
