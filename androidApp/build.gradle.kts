@@ -3,21 +3,28 @@ plugins {
     kotlin("android")
 }
 
-val extras = rootProject.extra
-
 android {
     namespace = "com.mecofarid.summy"
-    compileSdk = extras["compiledSdk"] as Int
+    compileSdk = libs.versions.compileTargetSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.mecofarid.summy"
-        minSdk = extras["minSdk"] as Int
-        targetSdk = extras["targetSdk"] as Int
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = "com.mecofarid.summy.android"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.compileTargetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.version.get()
     }
-    viewBinding {
-        enable = true
+
+    // TODO: Remove when move to compose
+    buildFeatures{
+        viewBinding = true
     }
+    // TODO: Uncomment after migrating to compose
+//    buildFeatures {
+//        compose = true
+//    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+//    }
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -28,13 +35,20 @@ android {
             isMinifyEnabled = false
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
+
+    // TODO: Delete after migrating to compose
     implementation ("androidx.appcompat:appcompat:1.5.1")
     implementation ("com.google.android.material:material:1.7.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 }

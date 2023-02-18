@@ -4,10 +4,14 @@ plugins {
     id("com.android.library")
 }
 
-val extras = rootProject.extra
-
 kotlin {
-    android()
+    android {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -15,8 +19,8 @@ kotlin {
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "14.1"
+        version = libs.versions.version.get()
+        ios.deploymentTarget = libs.versions.deploymentTarget.get()
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "shared"
@@ -25,17 +29,28 @@ kotlin {
     
     sourceSets {
         val commonMain by getting {
-            dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${extras["kotlinCoroutines"]}")
+            dependencies{
+                implementation(libs.kotlinxCoroutinesCore)
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(libs.kotlinCoroutinesTest)
+                implementation(libs.mockkCommon)
             }
         }
-        val androidMain by getting
-        val androidTest by getting
+        val androidMain by getting {
+            dependencies{
+                implementation(libs.viewModel)
+                implementation(libs.liveData)
+            }
+        }
+        val androidUnitTest by getting {
+            dependencies{
+                implementation(libs.mockk)
+            }
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -58,10 +73,9 @@ kotlin {
 }
 
 android {
-    namespace = "com.mecofarid.summy"
-    compileSdk = extras["compiledSdk"] as Int
+    namespace = "com.mecofarid.summy.android"
+    compileSdk = libs.versions.compileTargetSdk.get().toInt()
     defaultConfig {
-        minSdk = extras["minSdk"] as Int
-        targetSdk = extras["targetSdk"] as Int
+        minSdk = libs.versions.minSdk.get().toInt()
     }
 }
