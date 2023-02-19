@@ -17,6 +17,7 @@ interface PutDatasource<RequestType, ReturnType, E> {
 
 /**
  * It is common to request deletion and receive specific type of data as return.
+ * That is [T] is specified
  */
 interface DeleteDatasource<T, E> {
     suspend fun delete(query: Query): Either<E, T>
