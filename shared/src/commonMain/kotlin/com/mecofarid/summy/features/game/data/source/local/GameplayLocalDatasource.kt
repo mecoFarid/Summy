@@ -31,8 +31,6 @@ class GameplayLocalDatasource: GetDatasource<Gameplay, DataException> {
         var sum = addends.sum() * addendSumMultiplier
 
         val randomAddendCount = randomInt(min = addends.size / 2, max = addends.size)
-        // Add random addends to make target less predictable
-
         repeat(randomAddendCount) {
             sum += addends.random()
         }
