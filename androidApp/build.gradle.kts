@@ -14,17 +14,12 @@ android {
         versionName = libs.versions.version.get()
     }
 
-    // TODO: Remove when move to compose
-    buildFeatures{
-        viewBinding = true
+    buildFeatures {
+        compose = true
     }
-    // TODO: Uncomment after migrating to compose
-//    buildFeatures {
-//        compose = true
-//    }
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-//    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    }
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -46,9 +41,16 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(platform(libs.composeBom))
+    implementation(libs.composeUi)
+    implementation(libs.composeFoundation)
+    implementation(libs.composeMaterial3)
+    implementation(libs.composeActivity)
+    implementation(libs.navigation)
+    implementation(libs.composeRuntime)
+    implementation(libs.material)
+    implementation(libs.accompanist)
 
-    // TODO: Delete after migrating to compose
-    implementation ("androidx.appcompat:appcompat:1.5.1")
-    implementation ("com.google.android.material:material:1.7.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    debugImplementation(libs.composeUiTooling)
+    debugImplementation(libs.composeUiToolingPreview)
 }

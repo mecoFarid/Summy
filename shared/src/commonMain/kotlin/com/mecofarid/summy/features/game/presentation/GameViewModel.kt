@@ -36,8 +36,8 @@ class GameViewModel(
 
   private val internalElapsedTime = MutableStateFlow(0L)
   val elapsedTime: StateFlow<Long> = internalElapsedTime
-  private val internalScreenState = MutableStateFlow<ScreenState>(ScreenState.Running)
-  val screenState: StateFlow<ScreenState> = internalScreenState
+  private val internalGameState = MutableStateFlow<GameState>(GameState.Running)
+  val gameState: StateFlow<GameState> = internalGameState
 
   private var elapsedTimeJob: Job? = null
   private var gameJob: Job? = null
@@ -59,7 +59,7 @@ class GameViewModel(
     updateScreeState(screenState)
   }
 
-  private fun isGameRunning() = screenState.value == ScreenState.Running
+  private fun isGameRunning() = gameState.value == GameState.Running
 
   private fun updateSumMoveCounter(addend: Int): GameProgress {
     val gameProgress = requireNotNull(internalGameProgess.value)
@@ -71,34 +71,34 @@ class GameViewModel(
     return newProgress
   }
 
-  private fun getScreenState(gameProgress: GameProgress): ScreenState {
+  private fun getScreenState(gameProgress: GameProgress): GameState {
     val elapsedTime = requireNotNull(elapsedTime.value)
     val addendTarget = requireNotNull(internalGameplay.value)
-    val screenState =
+    val gameState =
       when (getGameStateInteractor(gameProgress.sum, addendTarget.target)) {
-        GetGameStateInteractor.CompletionResult.SUCCESS -> ScreenState.Succeeded(
+        GetGameStateInteractor.CompletionResult.SUCCESS -> GameState.Succeeded(
           gameProgress.moveCounter,
           elapsedTime
         )
-        GetGameStateInteractor.CompletionResult.FAILURE -> ScreenState.Failed(
+        GetGameStateInteractor.CompletionResult.FAILURE -> GameState.Failed(
           gameProgress.moveCounter,
           elapsedTime
         )
-        GetGameStateInteractor.CompletionResult.RUNNING -> ScreenState.Running
+        GetGameStateInteractor.CompletionResult.RUNNING -> GameState.Running
       }
-    return screenState
+    return gameState
   }
 
-  private fun updateScreeState(screenState: ScreenState) {
-    if (screenState.isGameFinished())
+  private fun updateScreeState(gameState: GameState) {
+    if (gameState.isGameFinished())
       stopTicker()
 
-    internalScreenState.value = screenState
+    internalGameState.value = gameState
   }
 
   @Suppress("ForbiddenComment")
   private fun startGame() {
-    updateScreeState(ScreenState.Loading)
+    updateScreeState(GameState.Loading)
     gameJob?.cancel()
     gameJob = scope.launch {
       getGameplayInteractor(GAMEPLAY_QUERY)
@@ -118,7 +118,7 @@ class GameViewModel(
   private fun startTicker() {
     stopTicker()
     elapsedTimeJob = scope.launch {
-      internalScreenState.value = ScreenState.Running
+      internalGameState.value = GameState.Running
       elapsedTimeFlow(tickPeriod = TICKER_PERIOD).collect {
         internalElapsedTime.value = it
       }
@@ -129,11 +129,11 @@ class GameViewModel(
     elapsedTimeJob?.cancel()
   }
 
-  sealed class ScreenState {
-    object Loading : ScreenState()
-    object Running : ScreenState()
-    class Failed(val moveCount: Int, val elapsedTime: Long) : ScreenState()
-    class Succeeded(val moveCount: Int, val elapsedTime: Long) : ScreenState()
+  sealed class GameState {
+    object Loading : GameState()
+    object Running : GameState()
+    class Failed(val moveCount: Int, val elapsedTime: Long) : GameState()
+    class Succeeded(val moveCount: Int, val elapsedTime: Long) : GameState()
 
     fun isGameFinished() = this is Failed || this is Succeeded
   }

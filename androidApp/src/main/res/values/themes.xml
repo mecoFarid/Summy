@@ -1,69 +1,69 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
   <!-- Base application theme. -->
-  <style name="Theme.Summy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+  <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
     <!-- Primary brand color. -->
-    <item name="colorPrimary">@color/color_primary</item>
-    <item name="colorPrimaryVariant">@color/color_content_bg</item>
-    <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+<!--    <item name="colorPrimary">@color/color_primary</item>-->
+<!--    <item name="colorPrimaryVariant">@color/color_content_bg</item>-->
+<!--    <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>-->
   </style>
 
-  <style name="Theme.Summy.AddendStyle">
-    <item name="android:background">@drawable/addend_bg</item>
-    <item name="android:padding">@dimen/addend_padding</item>
-    <item name="android:textColor">@color/color_addend_text</item>
-    <item name="android:textSize">@dimen/addend_text_size</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_gravity">center</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:elevation">@dimen/addend_elevation</item>
-  </style>
+<!--  <style name="Theme.Summy.AddendStyle">-->
+<!--    <item name="android:background">@drawable/addend_bg</item>-->
+<!--    <item name="android:padding">@dimen/addend_padding</item>-->
+<!--    <item name="android:textColor">@color/color_addend_text</item>-->
+<!--    <item name="android:textSize">@dimen/addend_text_size</item>-->
+<!--    <item name="android:gravity">center</item>-->
+<!--    <item name="android:layout_gravity">center</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:elevation">@dimen/addend_elevation</item>-->
+<!--  </style>-->
 
-  <style name="Theme.Summy.SumStyle">
-    <item name="android:background">@drawable/sum_bg</item>
-    <item name="android:padding">@dimen/sum_padding</item>
-    <item name="android:textColor">@color/color_sum_text</item>
-    <item name="android:textSize">@dimen/sum_text_size</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:elevation">@dimen/sum_elevation</item>
-  </style>
+<!--  <style name="Theme.Summy.SumStyle">-->
+<!--    <item name="android:background">@drawable/sum_bg</item>-->
+<!--    <item name="android:padding">@dimen/sum_padding</item>-->
+<!--    <item name="android:textColor">@color/color_sum_text</item>-->
+<!--    <item name="android:textSize">@dimen/sum_text_size</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:elevation">@dimen/sum_elevation</item>-->
+<!--  </style>-->
 
-  <style name="Theme.Summy.TargetStyle">
-    <item name="android:background">@drawable/target_bg</item>
-    <item name="android:paddingTop">@dimen/target_padding_vertical</item>
-    <item name="android:paddingBottom">@dimen/target_padding_vertical</item>
-    <item name="android:paddingStart">@dimen/target_padding_horizontal</item>
-    <item name="android:paddingEnd">@dimen/target_padding_horizontal</item>
-    <item name="android:textColor">@color/color_target_text</item>
-    <item name="android:textSize">@dimen/target_text_size</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:elevation">@dimen/target_elevation</item>
-  </style>
+<!--  <style name="Theme.Summy.TargetStyle">-->
+<!--    <item name="android:background">@drawable/target_bg</item>-->
+<!--    <item name="android:paddingTop">@dimen/target_padding_vertical</item>-->
+<!--    <item name="android:paddingBottom">@dimen/target_padding_vertical</item>-->
+<!--    <item name="android:paddingStart">@dimen/target_padding_horizontal</item>-->
+<!--    <item name="android:paddingEnd">@dimen/target_padding_horizontal</item>-->
+<!--    <item name="android:textColor">@color/color_target_text</item>-->
+<!--    <item name="android:textSize">@dimen/target_text_size</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:elevation">@dimen/target_elevation</item>-->
+<!--  </style>-->
 
-  <style name="Theme.Summy.DefaultTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
-    <item name="android:textSize">@dimen/target_text_size</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:elevation">@dimen/target_elevation</item>
-    <item name="android:textColor">@color/color_default_text</item>
-  </style>
+<!--  <style name="Theme.Summy.DefaultTextAppearance" parent="TextAppearance.MaterialComponents.Caption">-->
+<!--    <item name="android:textSize">@dimen/target_text_size</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:elevation">@dimen/target_elevation</item>-->
+<!--    <item name="android:textColor">@color/color_default_text</item>-->
+<!--  </style>-->
 
-  <style name="Theme.Summy.DialogTitle">
-    <item name="android:padding">@dimen/dialog_title_padding</item>
-    <item name="android:textSize">@dimen/dialog_title_size</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:gravity">center</item>
-  </style>
+<!--  <style name="Theme.Summy.DialogTitle">-->
+<!--    <item name="android:padding">@dimen/dialog_title_padding</item>-->
+<!--    <item name="android:textSize">@dimen/dialog_title_size</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:gravity">center</item>-->
+<!--  </style>-->
 
-  <style name="Theme.Summy.DialogButton" parent="TextAppearance.MaterialComponents.Caption">
-    <item name="android:background">@drawable/alert_button_bg</item>
-    <item name="android:paddingTop">@dimen/dialog_button_vertical_padding</item>
-    <item name="android:paddingBottom">@dimen/dialog_button_vertical_padding</item>
-    <item name="android:paddingStart">@dimen/dialog_button_horizontal_padding</item>
-    <item name="android:paddingEnd">@dimen/dialog_button_horizontal_padding</item>
-    <item name="android:textSize">@dimen/dialog_button_size</item>
-    <item name="android:textColor">@color/color_alert_button_text</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:gravity">center</item>
-    <item name="android:elevation">@dimen/dialog_button_elevation</item>
-  </style>
+<!--  <style name="Theme.Summy.DialogButton" parent="TextAppearance.MaterialComponents.Caption">-->
+<!--    <item name="android:background">@drawable/alert_button_bg</item>-->
+<!--    <item name="android:paddingTop">@dimen/dialog_button_vertical_padding</item>-->
+<!--    <item name="android:paddingBottom">@dimen/dialog_button_vertical_padding</item>-->
+<!--    <item name="android:paddingStart">@dimen/dialog_button_horizontal_padding</item>-->
+<!--    <item name="android:paddingEnd">@dimen/dialog_button_horizontal_padding</item>-->
+<!--    <item name="android:textSize">@dimen/dialog_button_size</item>-->
+<!--    <item name="android:textColor">@color/color_alert_button_text</item>-->
+<!--    <item name="android:textStyle">bold</item>-->
+<!--    <item name="android:gravity">center</item>-->
+<!--    <item name="android:elevation">@dimen/dialog_button_elevation</item>-->
+<!--  </style>-->
 
 </resources>
