@@ -73,12 +73,12 @@ fun SumGamePad(
         modifier = modifier
             .bounce(
                 bounceWhenChanged = text,
-                maxScale = 1.05f
+                maxScale = 1.1f
             ),
     ) {
         CircleGamePad(
             modifier = Modifier
-                .padding(Dimens.gu_5),
+                .padding(Dimens.gu_6),
             text = text,
             fontSize = AppTheme.dimens.gameplayBigText
         )
@@ -99,7 +99,7 @@ fun AddendGamePad(
         }
         .bounce(
             bounceWhenChanged = clicked,
-            maxScale = 1.1f
+            maxScale = 0.95f
         ),
     ) {
         CircleGamePad(
@@ -133,11 +133,8 @@ fun TargetGamePad(
 fun Preview_GamePad() {
     AppTheme {
         Column {
-
             TargetGamePad(text = 123)
-
             SumGamePad(text = 23)
-
             AddendGamePad(text = 7, onClick = {})
         }
     }

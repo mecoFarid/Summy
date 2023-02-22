@@ -1,5 +1,6 @@
 package com.mecofarid.summy.features.game.presentation
 
+import com.mecofarid.summy.app.appComponent
 import com.mecofarid.summy.common.presentation.PlatformViewModel
 import com.mecofarid.summy.features.game.data.query.GameplayQuery
 import com.mecofarid.summy.features.game.domain.interactor.GetGameStateInteractor
@@ -29,11 +30,21 @@ class GameViewModel(
     private val getGameStateInteractor: GetGameStateInteractor
 ): PlatformViewModel() {
 
+  companion object{
+    val Factory:() -> GameViewModel = {
+      with(appComponent.gameComponent) {
+        GameViewModel(
+          getGameplayInteractor(),
+          getGamepStateInteractor()
+        )
+      }
+    }
+  }
+
   private val internalGameplay = MutableStateFlow(Gameplay(addends = emptyList(), target = 0))
   val gameplay: StateFlow<Gameplay> = internalGameplay
   private val internalGameProgess = MutableStateFlow(INITIAL_GAME_PROGRESS)
   val gameProgress: StateFlow<GameProgress> = internalGameProgess
-
   private val internalElapsedTime = MutableStateFlow(0L)
   val elapsedTime: StateFlow<Long> = internalElapsedTime
   private val internalGameState = MutableStateFlow<GameState>(GameState.Running)
@@ -59,7 +70,7 @@ class GameViewModel(
     updateScreeState(screenState)
   }
 
-  private fun isGameRunning() = gameState.value == GameState.Running
+  private fun isGameRunning() = gameState.value.isGameRunning()
 
   private fun updateSumMoveCounter(addend: Int): GameProgress {
     val gameProgress = requireNotNull(internalGameProgess.value)
@@ -76,11 +87,11 @@ class GameViewModel(
     val addendTarget = requireNotNull(internalGameplay.value)
     val gameState =
       when (getGameStateInteractor(gameProgress.sum, addendTarget.target)) {
-        GetGameStateInteractor.CompletionResult.SUCCESS -> GameState.Succeeded(
+        GetGameStateInteractor.CompletionResult.SUCCESS -> GameState.Completed.Succeeded(
           gameProgress.moveCounter,
           elapsedTime
         )
-        GetGameStateInteractor.CompletionResult.FAILURE -> GameState.Failed(
+        GetGameStateInteractor.CompletionResult.FAILURE -> GameState.Completed.Failed(
           gameProgress.moveCounter,
           elapsedTime
         )
@@ -90,7 +101,7 @@ class GameViewModel(
   }
 
   private fun updateScreeState(gameState: GameState) {
-    if (gameState.isGameFinished())
+    if (gameState.isGameCompleted())
       stopTicker()
 
     internalGameState.value = gameState
@@ -132,9 +143,13 @@ class GameViewModel(
   sealed class GameState {
     object Loading : GameState()
     object Running : GameState()
-    class Failed(val moveCount: Int, val elapsedTime: Long) : GameState()
-    class Succeeded(val moveCount: Int, val elapsedTime: Long) : GameState()
+    sealed class Completed(open val moveCount: Int, open val elapsedTime: Long): GameState() {
+      class Failed(override val moveCount: Int, override val elapsedTime: Long) : Completed(moveCount, elapsedTime)
+      class Succeeded(override val moveCount: Int, override val elapsedTime: Long) : Completed(moveCount, elapsedTime)
+    }
 
-    fun isGameFinished() = this is Failed || this is Succeeded
+    fun isGameCompleted() = this is Completed
+
+    fun isGameRunning() = this == Running
   }
 }

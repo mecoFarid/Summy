@@ -16,6 +16,7 @@ object Dimens {
     val gu_6 = 48.dp
     val gu_8 = 64.dp
     val gu_10 = 80.dp
+    val gu_12 = 96.dp
     val gu_14 = 112.dp
 
     val text_gu = 8.sp

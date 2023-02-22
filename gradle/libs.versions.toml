@@ -12,6 +12,7 @@ activityCompose = "1.7.0-alpha03"
 navigation = "2.6.0-alpha04"
 material = "1.8.0"
 accompanist = "0.29.1-alpha"
+composeConstraintLayout = "1.0.1"
 
 lifecycle = "2.5.1"
 
@@ -42,6 +43,7 @@ composeActivity = { module = "androidx.activity:activity-compose", version.ref =
 navigation = { module = "androidx.navigation:navigation-compose", version.ref ="navigation" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 accompanist = {module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+composeConstraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "composeConstraintLayout"}
 
 
 viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }

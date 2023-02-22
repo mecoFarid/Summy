@@ -39,14 +39,14 @@ fun Modifier.bounce(bounceWhenChanged: Any, maxScale: Float) = composed {
 
     LaunchedEffect(key1 = bounceWhenChanged) {
         coroutineScope.launch {
-            val spring = spring<Float>(Spring.DampingRatioNoBouncy, Spring.StiffnessHigh)
+            val animationSpec = spring<Float>(Spring.DampingRatioLowBouncy, Spring.StiffnessMedium)
             scale.animateTo(
                 targetValue = maxScale,
-                animationSpec = spring
+                animationSpec = animationSpec
             )
             scale.animateTo(
                 targetValue = 1f,
-                animationSpec = spring
+                animationSpec = animationSpec
             )
         }
     }

@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.composeRuntime)
     implementation(libs.material)
     implementation(libs.accompanist)
+    implementation(libs.composeConstraintLayout)
 
     debugImplementation(libs.composeUiTooling)
     debugImplementation(libs.composeUiToolingPreview)
