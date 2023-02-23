@@ -7,5 +7,5 @@ object Colors {
     val Orange = Color(0xfffcba03)
     val DarkOrange = Color(0xffa48b2a)
     val Green = Color(0xff74c470)
-    val Red = Color(0xffdd3d2f)
+    val Red = Color(0xffD03F3F)
 }

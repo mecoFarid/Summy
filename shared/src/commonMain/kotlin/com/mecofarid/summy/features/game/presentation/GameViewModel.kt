@@ -13,6 +13,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlin.time.ExperimentalTime
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
 
 
 private const val TICKER_PERIOD = 1000L // seconds
@@ -43,15 +46,17 @@ class GameViewModel(
 
   private val internalGameplay = MutableStateFlow(Gameplay(addends = emptyList(), target = 0))
   val gameplay: StateFlow<Gameplay> = internalGameplay
-  private val internalGameProgess = MutableStateFlow(INITIAL_GAME_PROGRESS)
-  val gameProgress: StateFlow<GameProgress> = internalGameProgess
-  private val internalElapsedTime = MutableStateFlow(0L)
-  val elapsedTime: StateFlow<Long> = internalElapsedTime
-  private val internalGameState = MutableStateFlow<GameState>(GameState.Running)
-  val gameState: StateFlow<GameState> = internalGameState
+  private val internalGameProgress = MutableStateFlow(INITIAL_GAME_PROGRESS)
+  val gameProgress: StateFlow<GameProgress> = internalGameProgress
+  private val internalTimeTicker = MutableStateFlow(0L)
+  val timeTicker: StateFlow<Long> = internalTimeTicker
+  private val internalScreenState = MutableStateFlow<ScreenState>(ScreenState.Running)
+  val screenState: StateFlow<ScreenState> = internalScreenState
 
-  private var elapsedTimeJob: Job? = null
+  private var timeTickerJob: Job? = null
   private var gameJob: Job? = null
+  @OptIn(ExperimentalTime::class)
+  private lateinit var exactElapsedTimeMark: TimeMark
 
   init {
     startGame()
@@ -65,58 +70,52 @@ class GameViewModel(
     if (!isGameRunning())
       return
 
-    val sumMoveCounter = updateSumMoveCounter(addend)
-    val screenState = getScreenState(sumMoveCounter)
-    updateScreeState(screenState)
+    updateGameProgressAndState(addend)
   }
 
-  private fun isGameRunning() = gameState.value.isGameRunning()
+  private fun isGameRunning() = screenState.value.isGameRunning()
 
-  private fun updateSumMoveCounter(addend: Int): GameProgress {
-    val gameProgress = requireNotNull(internalGameProgess.value)
-    val newProgress = GameProgress(
-      sum = gameProgress.sum + addend,
-      moveCounter = gameProgress.moveCounter + 1
-    )
-    internalGameProgess.value = newProgress
-    return newProgress
-  }
+  private fun updateGameProgressAndState(addend: Int) {
+    val gameplay = requireNotNull(internalGameplay.value)
+    val gameProgress = requireNotNull(internalGameProgress.value)
+    val gameState = getGameStateInteractor(gameProgress, addend, gameplay.target)
 
-  private fun getScreenState(gameProgress: GameProgress): GameState {
-    val elapsedTime = requireNotNull(elapsedTime.value)
-    val addendTarget = requireNotNull(internalGameplay.value)
-    val gameState =
-      when (getGameStateInteractor(gameProgress.sum, addendTarget.target)) {
-        GetGameStateInteractor.CompletionResult.SUCCESS -> GameState.Completed.Succeeded(
-          gameProgress.moveCounter,
-          elapsedTime
+    internalGameProgress.value = gameState.gameProgress
+
+    val screenState =
+      when (gameState) {
+        is GetGameStateInteractor.State.Success -> ScreenState.Completed.Succeeded(
+          gameState.gameProgress.moveCounter,
+          getExactElapsedTime()
         )
-        GetGameStateInteractor.CompletionResult.FAILURE -> GameState.Completed.Failed(
-          gameProgress.moveCounter,
-          elapsedTime
+        is GetGameStateInteractor.State.Failure -> ScreenState.Completed.Failed(
+          gameState.gameProgress.moveCounter,
+          getExactElapsedTime()
         )
-        GetGameStateInteractor.CompletionResult.RUNNING -> GameState.Running
+        is GetGameStateInteractor.State.Running -> ScreenState.Running
       }
-    return gameState
+    updateGameState(screenState)
   }
 
-  private fun updateScreeState(gameState: GameState) {
-    if (gameState.isGameCompleted())
+  private fun updateGameState(screenState: ScreenState) {
+    if (screenState.isGameCompleted())
       stopTicker()
 
-    internalGameState.value = gameState
+    internalScreenState.value = screenState
   }
 
   @Suppress("ForbiddenComment")
   private fun startGame() {
-    updateScreeState(GameState.Loading)
+    updateGameState(ScreenState.Loading)
     gameJob?.cancel()
     gameJob = scope.launch {
       getGameplayInteractor(GAMEPLAY_QUERY)
         .onRight {
           internalGameplay.value = it
-          internalElapsedTime.value = 0
-          internalGameProgess.value = INITIAL_GAME_PROGRESS
+          internalGameProgress.value = INITIAL_GAME_PROGRESS
+
+          updateGameState(ScreenState.Running)
+          startExactElapsedTimer()
 
           startTicker()
         }
@@ -126,24 +125,33 @@ class GameViewModel(
     }
   }
 
+  @OptIn(ExperimentalTime::class)
   private fun startTicker() {
     stopTicker()
-    elapsedTimeJob = scope.launch {
-      internalGameState.value = GameState.Running
+    timeTickerJob = scope.launch {
       elapsedTimeFlow(tickPeriod = TICKER_PERIOD).collect {
-        internalElapsedTime.value = it
+        internalTimeTicker.value = it
       }
     }
   }
 
   private fun stopTicker() {
-    elapsedTimeJob?.cancel()
+    timeTickerJob?.cancel()
   }
 
-  sealed class GameState {
-    object Loading : GameState()
-    object Running : GameState()
-    sealed class Completed(open val moveCount: Int, open val elapsedTime: Long): GameState() {
+  @OptIn(ExperimentalTime::class)
+  private fun startExactElapsedTimer(){
+     exactElapsedTimeMark = TimeSource.Monotonic.markNow()
+  }
+
+  @OptIn(ExperimentalTime::class)
+  private fun getExactElapsedTime() =
+    exactElapsedTimeMark.elapsedNow().inWholeMilliseconds
+
+  sealed class ScreenState {
+    object Loading : ScreenState()
+    object Running : ScreenState()
+    sealed class Completed(open val moveCount: Int, open val elapsedTime: Long): ScreenState() {
       class Failed(override val moveCount: Int, override val elapsedTime: Long) : Completed(moveCount, elapsedTime)
       class Succeeded(override val moveCount: Int, override val elapsedTime: Long) : Completed(moveCount, elapsedTime)
     }

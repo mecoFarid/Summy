@@ -16,8 +16,6 @@ composeConstraintLayout = "1.0.1"
 
 lifecycle = "2.5.1"
 
-detekt = "1.20.0"
-
 # iOS
 deploymentTarget = "14.0"
 
@@ -29,6 +27,8 @@ kotlinxCoroutines = "1.6.4"
 kotlinCoroutinesTest = "1.6.4"
 mockk = "1.13.2"
 mockkCommon = "1.12.5"
+
+detekt = "1.20.0"
 
 [libraries]
 #Android
@@ -44,7 +44,6 @@ navigation = { module = "androidx.navigation:navigation-compose", version.ref ="
 material = { module = "com.google.android.material:material", version.ref = "material" }
 accompanist = {module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 composeConstraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "composeConstraintLayout"}
-
 
 viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 liveData = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }

@@ -35,10 +35,10 @@ fun GameScreen(
 ) {
     gameViewModel.apply {
         GameScreenContent(
-            gameState = gameState.collectAsStateWithLifecycle().value,
+            screenState = screenState.collectAsStateWithLifecycle().value,
             gameplay = gameplay.collectAsStateWithLifecycle().value,
             gameProgress = gameProgress.collectAsStateWithLifecycle().value,
-            elapseTime = elapsedTime.collectAsStateWithLifecycle().value,
+            elapseTime = timeTicker.collectAsStateWithLifecycle().value,
             onAdd = { onAdd(it) },
             onRestartGame = { restartGame() }
         )
@@ -47,7 +47,7 @@ fun GameScreen(
 
 @Composable
 fun GameScreenContent(
-    gameState: GameViewModel.GameState,
+    screenState: GameViewModel.ScreenState,
     gameplay: Gameplay,
     gameProgress: GameProgress,
     elapseTime: Long,
@@ -99,10 +99,10 @@ fun GameScreenContent(
             }
         }
 
-        if (gameState.isGameCompleted())
+        if (screenState.isGameCompleted())
             GameResultDialog(
                 onRestartGame = onRestartGame,
-                gameResult = gameState as GameViewModel.GameState.Completed
+                gameResult = screenState as GameViewModel.ScreenState.Completed
             )
     }
 }
@@ -131,7 +131,7 @@ fun PreviewGameScreenContent(){
                 mutableStateOf(GameProgress(459, 78))
             }
             GameScreenContent(
-                gameState = GameViewModel.GameState.Running,
+                screenState = GameViewModel.ScreenState.Running,
                 gameplay = Gameplay(listOf(1, 24, 3), 105),
                 gameProgress = gameProgress,
                 elapseTime = 100,

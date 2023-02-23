@@ -24,8 +24,6 @@ fun Modifier.squareAspectRatio() =
         val width = placeable.width
         val size = maxOf(height, width)
 
-        println("KOKO $size")
-
         //assign the dimension and the center position
         layout(size, size) {
             // Where the composable gets placed

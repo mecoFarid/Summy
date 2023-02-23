@@ -36,7 +36,7 @@ import com.mecofarid.summy.resources.Dimens
 @Composable
 fun GameResultDialog(
     onRestartGame: () -> Unit,
-    gameResult: GameViewModel.GameState.Completed
+    gameResult: GameViewModel.ScreenState.Completed
 ) {
     Dialog(
         onDismissRequest = onRestartGame,
@@ -103,21 +103,22 @@ fun GameResultDialog(
 }
 
 @Composable
-private fun GameViewModel.GameState.Completed.getScreenState() =
-    when (this) {
-        is GameViewModel.GameState.Completed.Failed ->
+private fun GameViewModel.ScreenState.Completed.getScreenState():ScreenState {
+    return when (this) {
+        is GameViewModel.ScreenState.Completed.Failed ->
             ScreenState(
                 R.drawable.failure,
                 R.string.alert_failure,
                 buttonColor = MaterialTheme.colorScheme.error
             )
-        is GameViewModel.GameState.Completed.Succeeded ->
+        is GameViewModel.ScreenState.Completed.Succeeded ->
             ScreenState(
                 R.drawable.success,
                 R.string.alert_success,
                 buttonColor = AppTheme.colorScheme.success
             )
     }
+}
 
 data class ScreenState(
     @DrawableRes val icon: Int,
@@ -131,7 +132,7 @@ fun PreviewGameResultDialog() {
     AppTheme {
         GameResultDialog(
             onRestartGame = { /*TODO*/ },
-            gameResult = GameViewModel.GameState.Completed.Succeeded(0, 0)
+            gameResult = GameViewModel.ScreenState.Completed.Succeeded(0, 0)
         )
     }
 }
