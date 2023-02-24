@@ -111,8 +111,6 @@ fun AddendGamePad(
     }
 }
 
-
-
 @Composable
 fun TargetGamePad(
     modifier: Modifier = Modifier,
@@ -126,7 +124,6 @@ fun TargetGamePad(
         fontSize = AppTheme.dimens.gameplayMediumText
     )
 }
-
 
 @SystemUiPreview
 @Composable

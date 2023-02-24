@@ -58,7 +58,6 @@ val LocalAppColorScheme = staticCompositionLocalOf<AppColors> {
 
 val AppColorScheme = AppColors(
     gameplayPad = Colors.Orange,
-    gameplayPadPressed = Colors.DarkOrange,
     gameplayOnPad = Color.White,
     gameplayIndicatorText = Color.White,
     gameplayResultDialog = Color.White,
@@ -68,7 +67,6 @@ val AppColorScheme = AppColors(
 
 data class AppColors(
     val gameplayPad: Color,
-    val gameplayPadPressed: Color,
     val gameplayOnPad: Color,
     val gameplayIndicatorText: Color,
     val gameplayResultDialog: Color,
