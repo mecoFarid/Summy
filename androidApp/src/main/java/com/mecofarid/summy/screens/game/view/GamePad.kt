@@ -133,6 +133,7 @@ fun Preview_GamePad() {
             TargetGamePad(text = 123)
             SumGamePad(text = 23)
             AddendGamePad(text = 7, onClick = {})
+            AddendGamePad(text = 34, onClick = {})
         }
     }
 }

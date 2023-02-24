@@ -1,6 +1,6 @@
 package com.mecofarid.summy.features.game.domain.model
 
 data class Gameplay(
-  val addends: Collection<Int>,
+  val addends: List<Int>,
   val target: Int
 )
