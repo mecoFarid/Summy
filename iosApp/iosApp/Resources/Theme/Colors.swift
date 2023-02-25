@@ -24,6 +24,7 @@ enum Colors {
     static let gameplayOnPad = Color.white
     static let gameplayIndicatorText = Color.white
     static let gameplayResultDialog = Color.white
+    static let priparyTextColor = Color.darkBlue
     static let success = Color.green
     static let onSuccess = Color.white
     static let error = Color.red

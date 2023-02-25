@@ -34,10 +34,10 @@ struct GameResultDialog: View {
             
             VStack{
                 Text(LocalizedStringKey(screenState.message))
-                    .font(.body)
+                    .font(.subheadline)
                     .padding([.top, .bottom])
+                    .foregroundColor(Colors.priparyTextColor)
                 Text("alert_button_restart")
-                    .textCase(.uppercase)
                     .font(.body.bold())
                     .padding([.top, .bottom], Dimens.gu)
                     .frame(maxWidth: .infinity)
@@ -49,7 +49,7 @@ struct GameResultDialog: View {
             .padding([.top], iconSize / 2.0)
             .padding([.bottom], Dimens.gu_2)
             .padding([.leading, .trailing], Dimens.gu_2)
-            .background(Color.red)
+            .background(Colors.gameplayResultDialog)
             .clipShape(RoundedRectangle(cornerRadius: Dimens.gu_2))
             .padding([.leading, .trailing], Dimens.gu_4)
         }

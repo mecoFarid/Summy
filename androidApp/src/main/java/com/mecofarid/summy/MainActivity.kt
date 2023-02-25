@@ -8,14 +8,14 @@ import com.mecofarid.summy.resources.AppTheme
 
 class MainActivity : ComponentActivity() {
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContent {
-      AppTheme {
-        Surface {
-          MainNavigation()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            AppTheme {
+                Surface {
+                    MainNavigation()
+                }
+            }
         }
-      }
     }
-  }
 }

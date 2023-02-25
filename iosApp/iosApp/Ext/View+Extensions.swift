@@ -14,7 +14,6 @@ extension View{
             GeometryReader { geometry in
                 // We want update to be waiting on queue. Otherwise, we chaneg view state while it is being updated
                 DispatchQueue.main.async {
-                    print("KOK 3")
                     size.wrappedValue = geometry.size
                 }
                 return Color.clear

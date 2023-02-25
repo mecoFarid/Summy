@@ -61,6 +61,7 @@ val AppColorScheme = AppColors(
     gameplayOnPad = Color.White,
     gameplayIndicatorText = Color.White,
     gameplayResultDialog = Color.White,
+    primaryTextColor = Color.DarkGray,
     success = Colors.Green,
     onSuccess = Color.White
 )
@@ -70,6 +71,7 @@ data class AppColors(
     val gameplayOnPad: Color,
     val gameplayIndicatorText: Color,
     val gameplayResultDialog: Color,
+    val primaryTextColor: Color,
     val success: Color,
     val onSuccess: Color
 )

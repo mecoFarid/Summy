@@ -33,14 +33,12 @@ struct GamePad<PadShape: Shape, Modifier: ViewModifier>: View {
 
 struct SumGamePad: View {
     
-    private let text: Int32
-    
-    init(_ text: Int32) {
-        self.text = text
-    }
+    @Binding var text: Int32
     
     var body: some View{
-        GamePad(modifier: PadViewModifier(), text: text, shape: Circle())
+        BouncingView(animationKey: $text, targetScale: 1.04, scaleRestoreTime: 0.1){
+            GamePad(modifier: PadViewModifier(), text: text, shape: Circle())
+        }
     }
     
     private struct PadViewModifier: ViewModifier{
@@ -55,14 +53,23 @@ struct SumGamePad: View {
 
 struct AddendGamePad: View {
 
+    @State private var scale = false
     private let text: Int32
-
-    init(_ text: Int32) {
+    private let onAdd: () -> Void
+    
+    init(_ text: Int32, onAdd: @escaping () -> Void) {
         self.text = text
+        self.onAdd = onAdd
     }
 
     var body: some View{
-        GamePad(modifier: PadViewModifier(), text: text, shape: Circle())
+        BouncingView(animationKey: $scale, targetScale: 0.95, scaleRestoreTime: 0.1){
+            GamePad(modifier: PadViewModifier(), text: text, shape: Circle())
+                .onTapGesture {
+                    onAdd()
+                    scale.toggle()
+                }
+        }
     }
 
     private struct PadViewModifier: ViewModifier{
@@ -70,7 +77,6 @@ struct AddendGamePad: View {
         @State private var size: CGSize = .zero
         
         func body(content: Content) -> some View {
-            
             content
                 .squareAspectRatio(initialSize: $size)
                 .padding(Dimens.gu_2)
@@ -107,10 +113,9 @@ struct GamePad_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             TargetGamePad(4)
-            SumGamePad(44)
-            AddendGamePad(45)
-            AddendGamePad(2)
+            SumGamePad(text: Binding(get: {44}, set: {_ in }) )
+            AddendGamePad(45){}
+            AddendGamePad(2){}
         }
-        
     }
 }

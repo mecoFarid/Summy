@@ -40,10 +40,10 @@ composeFoundation = { module = "androidx.compose.foundation:foundation" }
 composeMaterial3 = { module = "androidx.compose.material3:material3" }
 composeRuntime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "composeRuntime" }
 composeActivity = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
-navigation = { module = "androidx.navigation:navigation-compose", version.ref ="navigation" }
+navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-accompanist = {module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-composeConstraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "composeConstraintLayout"}
+accompanist = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+composeConstraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "composeConstraintLayout" }
 
 viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 liveData = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }

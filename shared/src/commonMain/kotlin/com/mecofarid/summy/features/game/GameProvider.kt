@@ -10,16 +10,16 @@ import com.mecofarid.summy.features.game.domain.interactor.GetGameStateInteracto
 import com.mecofarid.summy.features.game.domain.interactor.GetGameplayInteractor
 import com.mecofarid.summy.features.game.domain.model.Gameplay
 
-interface GameComponent{
+interface GameComponent {
     fun getGameplayInteractor(): GetGameplayInteractor
     fun getGamepStateInteractor(): GetGameStateInteractor
 }
 
-class GameModule: GameComponent{
+class GameModule : GameComponent {
 
     private val repository by lazy {
         val datasource = GameplayLocalDatasource()
-        object : GetRepository<Gameplay, DataException>{
+        object : GetRepository<Gameplay, DataException> {
             override suspend fun get(query: Query, operation: Operation): Either<DataException, Gameplay> =
                 datasource.get(query)
         }

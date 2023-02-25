@@ -183,10 +183,10 @@ fun <A> A.left(): Either<A, Nothing> = Either.Left(this)
 fun <A> A.right(): Either<Nothing, A> = Either.Right(this)
 
 @Suppress("TooGenericExceptionCaught", "InstanceOfCheckForException")
-inline fun <reified Left: Throwable, Right> asEither(block: () -> Right): Either<Left, Right> =
+inline fun <reified Left : Throwable, Right> asEither(block: () -> Right): Either<Left, Right> =
     try {
         Either.Right(block())
-    }catch (e: Throwable) {
+    } catch (e: Throwable) {
         if (e is Left)
             Either.Left(e)
         else

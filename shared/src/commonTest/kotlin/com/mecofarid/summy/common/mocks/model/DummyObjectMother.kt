@@ -1,4 +1,5 @@
 @file:Suppress("MatchingDeclarationName")
+
 package com.mecofarid.summy.common.mocks.model
 
 import com.mecofarid.summy.utils.randomInt

@@ -16,10 +16,10 @@ fun <T> Flow<T>.observeAsLiveData(
     timeoutInMs: Long = DEFAULT_TIMEOUT,
     observer: Observer<T>
 ) = asLiveData(
-        context,
-        timeoutInMs
-    ).observe(
-        owner,
-        observer
-    )
+    context,
+    timeoutInMs
+).observe(
+    owner,
+    observer
+)
 

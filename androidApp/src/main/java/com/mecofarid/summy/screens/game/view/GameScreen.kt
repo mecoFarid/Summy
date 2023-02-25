@@ -124,7 +124,7 @@ fun ProgressIndicator(
 
 @SystemUiPreview
 @Composable
-fun PreviewGameScreenContent(){
+fun PreviewGameScreenContent() {
     AppTheme {
         Surface {
             var gameProgress by remember {

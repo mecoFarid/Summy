@@ -11,7 +11,7 @@ class DatasourceMapper<I, O, E>(
     private val deleteDatasource: DeleteDatasource<I, E>,
     private val outMapper: Mapper<I, O>,
     private val inMapper: Mapper<O, I>
-): PutDatasource<O, O, E>, GetDatasource<O, E>, DeleteDatasource<O, E> {
+) : PutDatasource<O, O, E>, GetDatasource<O, E>, DeleteDatasource<O, E> {
 
     override suspend fun get(query: Query): Either<E, O> =
         getDatasource.get(query).map {

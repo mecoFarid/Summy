@@ -11,7 +11,7 @@ import com.mecofarid.summy.common.either.asEither
 class PutNetworkDatasource<I, O, E>(
     private val putService: PutNetworkService<I, O>,
     private val exceptionMapper: Mapper<NetworkException, E>
-): PutDatasource<I, O, E> {
+) : PutDatasource<I, O, E> {
 
     override suspend fun put(query: Query, data: I): Either<E, O> =
         executeRequest(exceptionMapper) { putService.put(query, data) }
@@ -20,7 +20,7 @@ class PutNetworkDatasource<I, O, E>(
 class GetNetworkDatasource<T, E>(
     private val putService: GetNetworkService<T>,
     private val exceptionMapper: Mapper<NetworkException, E>
-): GetDatasource<T, E> {
+) : GetDatasource<T, E> {
 
     override suspend fun get(query: Query): Either<E, T> =
         executeRequest(exceptionMapper) { putService.get(query) }
@@ -30,7 +30,7 @@ class GetNetworkDatasource<T, E>(
 class DeleteNetworkDatasource<T, E>(
     private val putService: DeleteNetworkService<T>,
     private val exceptionMapper: Mapper<NetworkException, E>
-): GetDatasource<T, E> {
+) : GetDatasource<T, E> {
 
     override suspend fun get(query: Query): Either<E, T> =
         executeRequest(exceptionMapper) { putService.delete(query) }

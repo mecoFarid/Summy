@@ -7,4 +7,4 @@ data class GameplayQuery(
     val addendSumMultiplier: Int,
     val minAddend: Int,
     val maxAddend: Int
-): Query
+) : Query

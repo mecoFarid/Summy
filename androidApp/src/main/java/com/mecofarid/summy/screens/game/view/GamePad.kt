@@ -89,18 +89,19 @@ fun SumGamePad(
 fun AddendGamePad(
     modifier: Modifier = Modifier,
     text: Int,
-    onClick: (Int) -> Unit
+    onClick: () -> Unit
 ) {
     var clicked by remember { mutableStateOf(false) }
-    Box(modifier = modifier
-        .clickableWithoutIndication {
-            clicked = !clicked
-            onClick(text)
-        }
-        .bounce(
-            bounceWhenChanged = clicked,
-            maxScale = 0.95f
-        ),
+    Box(
+        modifier = modifier
+            .clickableWithoutIndication {
+                clicked = !clicked
+                onClick()
+            }
+            .bounce(
+                bounceWhenChanged = clicked,
+                maxScale = 0.95f
+            ),
     ) {
         CircleGamePad(
             modifier = Modifier

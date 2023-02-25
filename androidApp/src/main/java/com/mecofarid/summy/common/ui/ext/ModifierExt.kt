@@ -27,7 +27,7 @@ fun Modifier.squareAspectRatio() =
         //assign the dimension and the center position
         layout(size, size) {
             // Where the composable gets placed
-            placeable.placeRelative((size-width)/2, (size-height)/2)
+            placeable.placeRelative((size - width) / 2, (size - height) / 2)
         }
     }
 

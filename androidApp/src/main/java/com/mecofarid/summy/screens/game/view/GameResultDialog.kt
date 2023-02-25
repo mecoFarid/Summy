@@ -42,7 +42,7 @@ fun GameResultDialog(
         onDismissRequest = onRestartGame,
         properties = DialogProperties(dismissOnClickOutside = false)
     ) {
-        ConstraintLayout{
+        ConstraintLayout {
             val iconSize = Dimens.gu_12
             val (background) = createRefs()
             Box(
@@ -79,7 +79,8 @@ fun GameResultDialog(
                         vertical = Dimens.gu_2
                     ),
                     text = stringResource(id = screenState.message),
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleSmall,
+                    color = AppTheme.colorScheme.primaryTextColor
                 )
                 Button(
                     modifier = Modifier
@@ -90,7 +91,7 @@ fun GameResultDialog(
                     onClick = onRestartGame
                 ) {
                     Text(
-                        text = stringResource(id = R.string.alert_button_restart).uppercase(),
+                        text = stringResource(id = R.string.alert_button_restart),
                         style = TextStyle(
                             fontWeight = FontWeight.Bold
                         )
@@ -103,7 +104,7 @@ fun GameResultDialog(
 }
 
 @Composable
-private fun GameViewModel.ScreenState.Completed.getScreenState():ScreenState {
+private fun GameViewModel.ScreenState.Completed.getScreenState(): ScreenState {
     return when (this) {
         is GameViewModel.ScreenState.Completed.Failed ->
             ScreenState(

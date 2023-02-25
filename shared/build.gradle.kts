@@ -26,10 +26,10 @@ kotlin {
             baseName = "shared"
         }
     }
-    
+
     sourceSets {
         val commonMain by getting {
-            dependencies{
+            dependencies {
                 implementation(libs.kotlinxCoroutinesCore)
             }
         }
@@ -41,13 +41,13 @@ kotlin {
             }
         }
         val androidMain by getting {
-            dependencies{
+            dependencies {
                 implementation(libs.viewModel)
                 implementation(libs.liveData)
             }
         }
         val androidUnitTest by getting {
-            dependencies{
+            dependencies {
                 implementation(libs.mockk)
             }
         }

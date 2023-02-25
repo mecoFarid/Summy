@@ -9,7 +9,7 @@ import com.mecofarid.summy.features.game.domain.model.Gameplay
 import com.mecofarid.summy.features.game.utils.randomInt
 
 
-class GameplayLocalDatasource: GetDatasource<Gameplay, DataException> {
+class GameplayLocalDatasource : GetDatasource<Gameplay, DataException> {
 
     override suspend fun get(query: Query): Either<Nothing, Gameplay> =
         when (query) {
@@ -22,8 +22,11 @@ class GameplayLocalDatasource: GetDatasource<Gameplay, DataException> {
 
     private fun GameplayQuery.getAddends() =
         buildList {
-            repeat(addendCount) {
-                add(randomInt(min = minAddend, max = maxAddend))
+            while (size < addendCount) {
+                // Don't allow duplicates
+                val addend = randomInt(min = minAddend, max = maxAddend)
+                if (!contains(addend))
+                    add(addend)
             }
         }
 

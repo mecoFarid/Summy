@@ -1,6 +1,6 @@
 package com.mecofarid.summy.app
 
-internal class PlatformApp{
+internal class PlatformApp {
     fun appModule(): AppComponent = AppModule()
 }
 

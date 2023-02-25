@@ -9,7 +9,7 @@ import com.mecofarid.summy.features.game.domain.model.Gameplay
 
 class GetGameplayInteractor(
     private val repository: GetRepository<Gameplay, DataException>
-){
+) {
     suspend operator fun invoke(query: GameplayQuery): Either<DataException, Gameplay> =
         repository.get(query, Operation.CacheThenMain)
 }
