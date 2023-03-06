@@ -14,6 +14,15 @@ android {
         versionName = libs.versions.version.get()
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("../keystore/signing_keystore.jks")
+            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
+
     buildFeatures {
         compose = true
     }
@@ -27,6 +36,7 @@ android {
     }
     buildTypes {
         getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
         }
     }
@@ -46,6 +56,7 @@ dependencies {
     implementation(libs.composeFoundation)
     implementation(libs.composeMaterial3)
     implementation(libs.composeActivity)
+    implementation(libs.composeUiToolingPreview)
     implementation(libs.navigation)
     implementation(libs.composeRuntime)
     implementation(libs.material)
@@ -53,5 +64,4 @@ dependencies {
     implementation(libs.composeConstraintLayout)
 
     debugImplementation(libs.composeUiTooling)
-    debugImplementation(libs.composeUiToolingPreview)
 }

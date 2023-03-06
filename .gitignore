@@ -10,7 +10,12 @@
 
 # built application files
 *.apk
+*.aab
 *.ap_
+
+# keystore files
+*.jks
+*.keystore
 
 # files for the dex VM
 *.dex
