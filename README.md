@@ -34,6 +34,7 @@ There is a **target** number at top-middle of screen with orange rectangle backg
 
 # LICENSE
 ```
-Intellectual properties of this project (includes and is not restricted to code and idea) 
-can only be used and/or modified as a playground; Commercial, patent or any other use is strictly prohibited.
+Intellectual properties of this project (includes and is not restricted to code and idea)
+can only be used and/or modified as a playground; 
+Commercial, patent or any other use is strictly prohibited.
 ```
