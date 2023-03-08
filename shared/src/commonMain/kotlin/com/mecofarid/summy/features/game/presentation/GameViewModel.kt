@@ -20,14 +20,11 @@ import kotlin.time.TimeSource
 
 private const val TICKER_PERIOD = 1000L // seconds
 private val INITIAL_GAME_PROGRESS = GameProgress(moveCounter = 0, sum = 0)
-
-@Suppress("MagicNumber")
-private val GAMEPLAY_QUERY = GameplayQuery(
-    addendCount = 3,
-    addendSumMultiplier = randomInt(1, 10),
-    minAddend = 1,
-    maxAddend = 9
-)
+private const val ADDEND_COUNT = 3
+private const val MIN_ADDEND = 1
+private const val MAX_ADDEND = 9
+private const val ADDEND_MIN_MULTIPLIER = 5
+private const val ADDEND_MAX_MULTIPLIER = 9
 
 class GameViewModel(
     private val getGameplayInteractor: GetGameplayInteractor,
@@ -111,7 +108,13 @@ class GameViewModel(
         updateGameState(ScreenState.Loading)
         gameJob?.cancel()
         gameJob = scope.launch {
-            getGameplayInteractor(GAMEPLAY_QUERY)
+            val query = GameplayQuery(
+                addendCount = ADDEND_COUNT,
+                addendSumMultiplier = randomInt(ADDEND_MIN_MULTIPLIER, ADDEND_MAX_MULTIPLIER),
+                minAddend = MIN_ADDEND,
+                maxAddend = MAX_ADDEND
+            )
+            getGameplayInteractor(query)
                 .onRight {
                     internalGameplay.value = it
                     internalGameProgress.value = INITIAL_GAME_PROGRESS
