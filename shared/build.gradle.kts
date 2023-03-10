@@ -73,7 +73,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.mecofarid.summy.android"
+    namespace = "com.mecofarid.summy.shared.android"
     compileSdk = libs.versions.compileTargetSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()

@@ -7,7 +7,7 @@ android {
     namespace = "com.mecofarid.summy"
     compileSdk = libs.versions.compileTargetSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.mecofarid.summy.android"
+        applicationId = "com.mecofarid.summy"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.compileTargetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
