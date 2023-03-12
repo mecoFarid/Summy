@@ -17,6 +17,10 @@
 *.jks
 *.keystore
 
+# automation
+automation/deployment
+androidApp/fastlane/report.xml
+
 # files for the dex VM
 *.dex
 

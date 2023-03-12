@@ -1,0 +1,83 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+desc "Runs all the tests"
+lane :test do
+  gradle_task(task: "test")
+end
+
+desc "Build release apk and bundle" 
+lane :build_app do
+  internal_build_app(task: "assembleRelease")
+  internal_build_app(task: "bundleRelease")
+end
+
+desc "Release to GitHub"
+lane :github_release do
+  sh('git fetch --tags')
+  last_tag = last_git_tag
+  tag_message = sh("git tag -l -n1 #{last_tag} | sed 's/^[^\t]*\t//'")
+  set_github_release(
+    repository_name: "mecoFarid/Summy",
+    api_token: secret(key: "GITHUB_TOKEN"),
+    name: tag_message,
+    tag_name: last_tag
+  )
+end
+
+desc "Submit a new Beta Build to Crashlytics Beta"
+lane :beta do
+  gradle_task(task: "clean assembleRelease")
+  crashlytics
+
+  # sh "your_script.sh"
+  # You can also use other beta testing services here
+end
+
+desc "Deploy a new version to the Google Play"
+lane :deploy do
+  gradle_task(task: "clean assembleRelease")
+  upload_to_play_store
+end
+
+desc "Internal method to build app"
+private_lane :internal_build_app do |values|
+  gradle_task(
+    task: values[:task],
+    properties: {
+      "android.injected.signing.store.file" => secret(key: "KEYSTORE_FILE_LOCATION"),
+      "android.injected.signing.store.password" => secret(key: "SIGNING_STORE_PASSWORD"),
+      "android.injected.signing.key.alias" => secret(key: "SIGNING_KEY_ALIAS"),
+      "android.injected.signing.key.password" => secret(key: "SIGNING_KEY_PASSWORD"),
+    }
+  )
+end
+
+desc "Internal method to ket secret from given .properties file"
+private_lane :secret do |values|
+  get_properties_value(
+    key: values[:key],
+    path: "../automation/deployment/deployment.properties"
+  )
+end
+
+desc "Internal method to run tasks on directory where gradlew is located"
+private_lane :gradle_task do |values|
+  gradle(
+    task: values[:task],
+    properties: values[:properties],
+    project_dir: '../'
+  )
+end

@@ -1,0 +1,1 @@
+cd "../../androidApp" && fastlane github_release

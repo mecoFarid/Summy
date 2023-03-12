@@ -14,15 +14,6 @@ android {
         versionName = libs.versions.version.get()
     }
 
-    signingConfigs {
-        create("release") {
-            storeFile = file("../keystore/signing_keystore.jks")
-            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
-        }
-    }
-
     buildFeatures {
         compose = true
     }
@@ -36,7 +27,6 @@ android {
     }
     buildTypes {
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
         }
     }
