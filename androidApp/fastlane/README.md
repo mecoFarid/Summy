@@ -21,10 +21,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Runs all the tests
 
-### build_app
+### build_release_app
 
 ```sh
-[bundle exec] fastlane build_app
+[bundle exec] fastlane build_release_app
 ```
 
 Build release apk and bundle

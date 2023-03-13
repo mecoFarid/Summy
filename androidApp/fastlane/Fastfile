@@ -19,7 +19,7 @@ lane :test do
 end
 
 desc "Build release apk and bundle" 
-lane :build_app do
+lane :build_release_app do
   internal_build_app(task: "assembleRelease")
   internal_build_app(task: "bundleRelease")
 end
