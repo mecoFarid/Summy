@@ -13,19 +13,22 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-desc "Runs all the tests"
-lane :test do
-  gradle_task(task: "test")
+desc "Release app to Github and Play Store"
+lane :release do
+  test()
+  generate_app(tasks: ["assembleRelease", "bundleRelease"])
+  github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]])
 end
 
-desc "Build release apk and bundle" 
-lane :build_release_app do
-  internal_build_app(task: "assembleRelease")
-  internal_build_app(task: "bundleRelease")
+desc "Run all the tests"
+private_lane :test do
+  gradle_task(tasks: ["test"])
 end
 
 desc "Release to GitHub"
-lane :github_release do
+private_lane :github_release do |values|
+  apk_output_path = ENV["APK_OUTPUT_PATH"]
+  puts "REAL PATHto: #{apk_output_path}"
   sh('git fetch --tags')
   last_tag = last_git_tag
   tag_message = sh("git tag -l -n1 #{last_tag} | sed 's/^[^\t]*\t//'")
@@ -33,29 +36,15 @@ lane :github_release do
     repository_name: "mecoFarid/Summy",
     api_token: secret(key: "GITHUB_TOKEN"),
     name: tag_message,
-    tag_name: last_tag
+    tag_name: last_tag,
+    upload_assets: values[:upload_assets]
   )
 end
 
-desc "Submit a new Beta Build to Crashlytics Beta"
-lane :beta do
-  gradle_task(task: "clean assembleRelease")
-  crashlytics
-
-  # sh "your_script.sh"
-  # You can also use other beta testing services here
-end
-
-desc "Deploy a new version to the Google Play"
-lane :deploy do
-  gradle_task(task: "clean assembleRelease")
-  upload_to_play_store
-end
-
-desc "Internal method to build app"
-private_lane :internal_build_app do |values|
+desc "Build app"
+private_lane :generate_app do |values|
   gradle_task(
-    task: values[:task],
+    tasks: values[:tasks],
     properties: {
       "android.injected.signing.store.file" => secret(key: "KEYSTORE_FILE_LOCATION"),
       "android.injected.signing.store.password" => secret(key: "SIGNING_STORE_PASSWORD"),
@@ -65,7 +54,7 @@ private_lane :internal_build_app do |values|
   )
 end
 
-desc "Internal method to ket secret from given .properties file"
+desc "Get secret from given .properties file"
 private_lane :secret do |values|
   get_properties_value(
     key: values[:key],
@@ -73,10 +62,10 @@ private_lane :secret do |values|
   )
 end
 
-desc "Internal method to run tasks on directory where gradlew is located"
+desc "Run tasks on directory where gradlew is located"
 private_lane :gradle_task do |values|
   gradle(
-    task: values[:task],
+    tasks: values[:tasks],
     properties: values[:properties],
     project_dir: '../'
   )

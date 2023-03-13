@@ -13,45 +13,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### test
+### release
 
 ```sh
-[bundle exec] fastlane test
+[bundle exec] fastlane release
 ```
 
-Runs all the tests
-
-### build_release_app
-
-```sh
-[bundle exec] fastlane build_release_app
-```
-
-Build release apk and bundle
-
-### github_release
-
-```sh
-[bundle exec] fastlane github_release
-```
-
-Release to GitHub
-
-### beta
-
-```sh
-[bundle exec] fastlane beta
-```
-
-Submit a new Beta Build to Crashlytics Beta
-
-### deploy
-
-```sh
-[bundle exec] fastlane deploy
-```
-
-Deploy a new version to the Google Play
+Release app to Github and Play Store
 
 ----
 
