@@ -15,9 +15,10 @@
 
 desc "Release app to Github and Play Store"
 lane :release do
-  test()
+#   test()
   generate_app(tasks: ["assembleRelease", "bundleRelease"])
   github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]])
+  release_to_play_store(aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH])
 end
 
 desc "Run all the tests"
@@ -26,9 +27,7 @@ private_lane :test do
 end
 
 desc "Release to GitHub"
-private_lane :github_release do |values|
-  apk_output_path = ENV["APK_OUTPUT_PATH"]
-  puts "REAL PATHto: #{apk_output_path}"
+private_lane :github_release do |params|
   sh('git fetch --tags')
   last_tag = last_git_tag
   tag_message = sh("git tag -l -n1 #{last_tag} | sed 's/^[^\t]*\t//'")
@@ -37,16 +36,16 @@ private_lane :github_release do |values|
     api_token: secret(key: "GITHUB_TOKEN"),
     name: tag_message,
     tag_name: last_tag,
-    upload_assets: values[:upload_assets]
+    upload_assets: params[:upload_assets]
   )
 end
 
 desc "Build app"
-private_lane :generate_app do |values|
+private_lane :generate_app do |params|
   gradle_task(
-    tasks: values[:tasks],
+    tasks: params[:tasks],
     properties: {
-      "android.injected.signing.store.file" => secret(key: "KEYSTORE_FILE_LOCATION"),
+      "android.injected.signing.store.file" => secret(key: "KEYSTORE_FILE_PATH"),
       "android.injected.signing.store.password" => secret(key: "SIGNING_STORE_PASSWORD"),
       "android.injected.signing.key.alias" => secret(key: "SIGNING_KEY_ALIAS"),
       "android.injected.signing.key.password" => secret(key: "SIGNING_KEY_PASSWORD"),
@@ -54,19 +53,33 @@ private_lane :generate_app do |values|
   )
 end
 
+desc "Release app to Play Store"
+private_lane :release_to_play_store do |params|
+  upload_to_play_store(
+    track: "production",
+    rollout: "1",
+    aab: params[:aab],
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+end
+
 desc "Get secret from given .properties file"
-private_lane :secret do |values|
+private_lane :secret do |params|
   get_properties_value(
-    key: values[:key],
-    path: "../automation/deployment/deployment.properties"
+    key: params[:key],
+    path: ENV["PROPERTIES_FILE_PATH"]
   )
 end
 
 desc "Run tasks on directory where gradlew is located"
-private_lane :gradle_task do |values|
+private_lane :gradle_task do |params|
   gradle(
-    tasks: values[:tasks],
-    properties: values[:properties],
+    tasks: params[:tasks],
+    properties: params[:properties],
     project_dir: '../'
   )
 end

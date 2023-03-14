@@ -18,7 +18,8 @@
 *.keystore
 
 # automation
-automation/deployment
+automation/keys
+**/fastlane/Appfile
 **/fastlane/report.xml
 
 # files for the dex VM
