@@ -14,12 +14,13 @@
 *.ap_
 
 # keystore files
-*.jks
-*.keystore
+#*.jks
+#*.keystore
 
 # automation
 automation/keys
 **/fastlane/Appfile
+**/fastlane/env.rb
 **/fastlane/report.xml
 
 # files for the dex VM

@@ -1,33 +1,61 @@
-keystore=release_keystore.jks
-app_publisher_android_key=app-publisher-android-key.json
-deployment_properties=deployment.properties
+while getopts ":a:b:c:d:e:f:" opt; do
+  case $opt in
+    a) GTHB_PERSONAL_TOKEN="$OPTARG";;
+    b) SIGNING_STORE_PASSWORD="$OPTARG";;
+    c) SIGNING_KEY_PASSWORD="$OPTARG";;
+    d) SIGNING_KEY_ALIAS="$OPTARG";;
+    e) KEYSTORE_CONTENT="$OPTARG";;
+    f) APP_PUBLISHER_ANDROID_KEY_CONTENT_ENCODED="$OPTARG";;
+    \?) echo "Invalid option -$OPTARG" >&2
+    exit 1
+    ;;
+  esac
+
+  case $OPTARG in
+    -*) echo "Option $opt needs a valid argument"
+    exit 1
+    ;;
+  esac
+done
+
+echo "ARG IS ${#APP_PUBLISHER_ANDROID_KEY_CONTENT} $APP_PUBLISHER_ANDROID_KEY_CONTENT"
+
+keys_dir="../keys"
+keystore="release_keystore.jks"
+app_publisher_android_key="app-publisher-android-key.json"
+fastlane_dir="../../androidApp/fastlane"
+
+# Create keys folder
+mkdir $keys_dir
 
 # Keystore
-sh file_generator.sh content=$KEYSTORE_CONTENT file_name=../keys/$keystore
+echo "$KEYSTORE_CONTENT" | base64 --decode > "$keys_dir/$keystore"
 
 # App publisher Android key
-sh file_generator.sh content=$APP_PUBLISHER_ANDROID_KEY_CONTENT file_name=../keys/$app_publisher_android_key
+echo "$APP_PUBLISHER_ANDROID_KEY_CONTENT_ENCODED" | base64 --decode > "$keys_dir/$app_publisher_android_key"
 
-# Deployment properties
+# Deployment environment variable
 deployment_property_list=(
-  "GITHUB_TOKEN=$GIHUB_API_TOKEN]"
-  "KEYSTORE_FILE_PATH=../automation/keys/$keystore"
-  "SIGNING_STORE_PASSWORD=$SIGNING_STORE_PASSWORD"
-  "SIGNING_KEY_PASSWORD=$SIGNING_KEY_PASSWORD"
-  "SIGNING_KEY_ALIAS=$SIGNING_KEY_ALIAS"
-  "APP_PUBLISHER_ANDROID_KEY_FILE_PATH=../automation/keys/$app_publisher_android_key"
-  "PACKAGE_NAME=com.mecofarid.summy"
+  "ENV[\"GTHB_PERSONAL_TOKEN\"]=\"$GTHB_PERSONAL_TOKEN\""
+  "ENV[\"KEYSTORE_FILE_PATH\"]=\"../automation/keys/$keystore\""
+  "ENV[\"SIGNING_STORE_PASSWORD\"]=\"$SIGNING_STORE_PASSWORD\""
+  "ENV[\"SIGNING_KEY_PASSWORD\"]=\"$SIGNING_KEY_PASSWORD\""
+  "ENV[\"SIGNING_KEY_ALIAS\"]=\"$SIGNING_KEY_ALIAS\""
 )
 deployment_properties_content=$(printf '%s\n' "${deployment_property_list[@]}")
-sh file_generator.sh content=$deployment_properties_content file_name=../keys/$deployment_properties
+echo "$deployment_properties_content" > "$fastlane_dir/env.rb"
+
 
 # Appfile
 appfile_property_list=(
-  "json_key_file('../automation/$app_publisher_android_key')"
-  "package_name('com.mecofarid.summy')"
-  "ENV['PROPERTIES_FILE_PATH']=\"../automation/keys/$deployment_properties\""
+  "json_key_file(\"../automation/keys/$app_publisher_android_key\")"
+  "package_name(\"com.mecofarid.summy\")"
 )
 appfile_content=$(printf '%s\n' "${appfile_property_list[@]}")
-sh file_generator.sh content=$appfile_content file_name=../../androidApp/fastlane/Appfile
+echo "$appfile_content" > "$fastlane_dir/Appfile"
 
-cd "../../androidApp" && fastlane release
+pushd "../../androidApp" || exit
+gem install fastlane -N
+bundle install
+fastlane release
+popd || exit

@@ -13,12 +13,18 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-desc "Release app to Github and Play Store"
-lane :release do
-#   test()
-  generate_app(tasks: ["assembleRelease", "bundleRelease"])
-  github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]])
-  release_to_play_store(aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH])
+require_relative 'env.rb'
+
+default_platform(:android)
+
+platform(:android) do
+  desc "Release app to Github and Play Store"
+  lane :release do
+    test()
+    generate_app(tasks: ["assembleRelease", "bundleRelease"])
+    github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]])
+    release_to_play_store(aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH])
+  end
 end
 
 desc "Run all the tests"
@@ -33,7 +39,7 @@ private_lane :github_release do |params|
   tag_message = sh("git tag -l -n1 #{last_tag} | sed 's/^[^\t]*\t//'")
   set_github_release(
     repository_name: "mecoFarid/Summy",
-    api_token: secret(key: "GITHUB_TOKEN"),
+    api_token: ENV["GTHB_PERSONAL_TOKEN"],
     name: tag_message,
     tag_name: last_tag,
     upload_assets: params[:upload_assets]
@@ -45,10 +51,10 @@ private_lane :generate_app do |params|
   gradle_task(
     tasks: params[:tasks],
     properties: {
-      "android.injected.signing.store.file" => secret(key: "KEYSTORE_FILE_PATH"),
-      "android.injected.signing.store.password" => secret(key: "SIGNING_STORE_PASSWORD"),
-      "android.injected.signing.key.alias" => secret(key: "SIGNING_KEY_ALIAS"),
-      "android.injected.signing.key.password" => secret(key: "SIGNING_KEY_PASSWORD"),
+      "android.injected.signing.store.file" => ENV["KEYSTORE_FILE_PATH"],
+      "android.injected.signing.store.password" => ENV["SIGNING_STORE_PASSWORD"],
+      "android.injected.signing.key.alias" => ENV["SIGNING_KEY_ALIAS"],
+      "android.injected.signing.key.password" => ENV["SIGNING_KEY_PASSWORD"]
     }
   )
 end
@@ -64,14 +70,6 @@ private_lane :release_to_play_store do |params|
     skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true
-  )
-end
-
-desc "Get secret from given .properties file"
-private_lane :secret do |params|
-  get_properties_value(
-    key: params[:key],
-    path: ENV["PROPERTIES_FILE_PATH"]
   )
 end
 

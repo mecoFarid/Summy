@@ -1,0 +1,25 @@
+name: Build and Publish App
+run-name: Build and Publish App
+on: [workflow_dispatch]
+
+jobs:
+  build:
+
+    environment: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+      - run: |
+          chmod +x deployment.sh
+          ./deployment.sh \
+          -a ${{ secrets.GTHB_PERSONAL_TOKEN }} \
+          -b "${{ secrets.SIGNING_STORE_PASSWORD }}" \
+          -c "${{ secrets.SIGNING_KEY_PASSWORD }}" \
+          -d "${{ secrets.SIGNING_KEY_ALIAS }}" \
+          -e ${{ secrets.KEYSTORE_CONTENT_ENCODED }} \
+          -f "${{ secrets.APP_PUBLISHER_ANDROID_KEY_CONTENT_ENCODED }}"
+        working-directory: automation/scripts
