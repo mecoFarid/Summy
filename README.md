@@ -31,6 +31,18 @@ There is a **target** number at top-middle of screen with orange rectangle backg
 - JUnit
 - Mockk
 
+## Deployment:
+### What is automated
+Release process is fully automated. That means all listed belowe are automated.
+- Tests
+- Github release
+- Play Conosole rollout
+
+### Tools
+- fastlane
+- GitHub Actions
+
+
 
 # LICENSE
 ```
