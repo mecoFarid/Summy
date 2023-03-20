@@ -34,7 +34,6 @@ end
 
 desc "Release to GitHub"
 private_lane :github_release do |params|
-  sh('git fetch --tags')
   last_tag = last_git_tag
   tag_message = sh("git tag -l -n1 #{last_tag} | sed 's/^[^\t]*\t//'")
   set_github_release(

@@ -57,5 +57,5 @@ echo "$appfile_content" > "$fastlane_dir/Appfile"
 pushd "../../androidApp" || exit
 gem install fastlane -N
 bundle install
-fastlane release
+bundle exec fastlane release
 popd || exit

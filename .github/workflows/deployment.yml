@@ -1,6 +1,9 @@
 name: Build and Publish App
 run-name: Build and Publish App
-on: [workflow_dispatch]
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
   build:
