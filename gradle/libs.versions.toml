@@ -1,9 +1,9 @@
 [versions]
 # Android
 androidGradlePlugin = "7.4.1"
-compileTargetSdk = "33"
+compileTargetSdk = "36"
 minSdk = "23"
-versionCode = "8"
+versionCode = "9"
 
 composeBom = "2023.01.00"
 composeCompiler = "1.4.0"
@@ -21,7 +21,7 @@ deploymentTarget = "14.0"
 
 #KMM
 kotlin = "1.8.0"
-version = "1.0"
+version = "1.1"
 kotlinxCoroutines = "1.6.4"
 
 kotlinCoroutinesTest = "1.6.4"
