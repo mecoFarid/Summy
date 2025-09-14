@@ -22,7 +22,7 @@ platform(:android) do
   lane :release do
     test()
     generate_app(tasks: ["assembleRelease", "bundleRelease"])
-    github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]])
+    github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH], lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]])
     release_to_play_store(aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH])
   end
 end
