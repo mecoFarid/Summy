@@ -7,6 +7,8 @@ plugins {
     id("com.android.library").version(libs.versions.androidGradlePlugin.get()).apply(false)
     id("org.jetbrains.kotlin.jvm").version(libs.versions.kotlin.get()).apply(false)
     id(libs.plugins.detekt.get().toString()).version(libs.versions.detekt.get())
+    alias(libs.plugins.jetbrainsCompose) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 subprojects {

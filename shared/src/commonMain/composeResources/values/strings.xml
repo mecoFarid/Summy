@@ -1,0 +1,5 @@
+<resources>
+    <string name="alert_button_restart">Play again</string>
+    <string name="alert_success">That is it! Such a masterclass move!</string>
+    <string name="alert_failure">Congratulations, you failed :)</string>
+</resources>

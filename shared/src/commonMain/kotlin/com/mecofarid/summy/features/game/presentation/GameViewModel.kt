@@ -1,7 +1,8 @@
 package com.mecofarid.summy.features.game.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mecofarid.summy.app.appComponent
-import com.mecofarid.summy.common.presentation.PlatformViewModel
 import com.mecofarid.summy.features.game.data.query.GameplayQuery
 import com.mecofarid.summy.features.game.domain.interactor.GetGameStateInteractor
 import com.mecofarid.summy.features.game.domain.interactor.GetGameplayInteractor
@@ -29,7 +30,7 @@ private const val ADDEND_MAX_MULTIPLIER = 9
 class GameViewModel(
     private val getGameplayInteractor: GetGameplayInteractor,
     private val getGameStateInteractor: GetGameStateInteractor
-) : PlatformViewModel() {
+) : ViewModel() {
 
     companion object {
         val Factory: () -> GameViewModel = {
@@ -107,7 +108,7 @@ class GameViewModel(
     private fun startGame() {
         updateGameState(ScreenState.Loading)
         gameJob?.cancel()
-        gameJob = scope.launch {
+        gameJob = viewModelScope.launch {
             val query = GameplayQuery(
                 addendCount = ADDEND_COUNT,
                 addendSumMultiplier = randomInt(ADDEND_MIN_MULTIPLIER, ADDEND_MAX_MULTIPLIER),
@@ -133,7 +134,7 @@ class GameViewModel(
     @OptIn(ExperimentalTime::class)
     private fun startTicker() {
         stopTicker()
-        timeTickerJob = scope.launch {
+        timeTickerJob = viewModelScope.launch {
             elapsedTimeFlow(tickPeriod = TICKER_PERIOD).collect {
                 internalTimeTicker.value = it
             }

@@ -1,31 +1,26 @@
 [versions]
 # Android
 androidGradlePlugin = "8.6.0"
-compileTargetSdk = "35"
+compileTargetSdk = "36"
 minSdk = "23"
 versionCode = "9"
 
-composeBom = "2023.01.00"
-composeCompiler = "1.4.0"
-composeRuntime = "2.6.0-alpha05"
-activityCompose = "1.7.0-alpha03"
-navigation = "2.6.0-alpha04"
+composeBom = "2025.09.00"
+composePlugin = "1.8.2"
+composeRuntime = "2.9.3"
+activityCompose = "1.10.1"
 material = "1.8.0"
-accompanist = "0.29.1-alpha"
-composeConstraintLayout = "1.0.1"
-
-lifecycle = "2.5.1"
 
 # iOS
 deploymentTarget = "18.0"
 
 #KMM
-kotlin = "1.8.0"
+kotlin = "2.2.20"
 version = "1.1"
-kotlinxCoroutines = "1.6.4"
+kotlinxCoroutines = "1.10.2"
 
-kotlinCoroutinesTest = "1.6.4"
-mockk = "1.13.2"
+kotlinCoroutinesTest = "1.10.2"
+mockk = "1.14.5"
 mockkCommon = "1.12.5"
 
 detekt = "1.20.0"
@@ -33,20 +28,10 @@ detekt = "1.20.0"
 [libraries]
 #Android
 composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-composeUi = { module = "androidx.compose.ui:ui" }
-composeUiTooling = { module = "androidx.compose.ui:ui-tooling" }
-composeUiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
-composeFoundation = { module = "androidx.compose.foundation:foundation" }
-composeMaterial3 = { module = "androidx.compose.material3:material3" }
 composeRuntime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "composeRuntime" }
 composeActivity = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-accompanist = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-composeConstraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "composeConstraintLayout" }
-
-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-liveData = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+viewModel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "composeRuntime" }
 
 #iOS
 
@@ -63,3 +48,6 @@ mockkCommon = { module = "io.mockk:mockk-common", version.ref = "mockkCommon" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "composePlugin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

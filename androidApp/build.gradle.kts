@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -14,12 +16,6 @@ android {
         versionName = libs.versions.version.get()
     }
 
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -41,17 +37,6 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(platform(libs.composeBom))
-    implementation(libs.composeUi)
-    implementation(libs.composeFoundation)
-    implementation(libs.composeMaterial3)
     implementation(libs.composeActivity)
-    implementation(libs.composeUiToolingPreview)
-    implementation(libs.navigation)
-    implementation(libs.composeRuntime)
     implementation(libs.material)
-    implementation(libs.accompanist)
-    implementation(libs.composeConstraintLayout)
-
-    debugImplementation(libs.composeUiTooling)
 }

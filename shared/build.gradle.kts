@@ -1,17 +1,20 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
-    android {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -29,46 +32,22 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.kotlinxCoroutinesCore)
-            }
+        commonMain.dependencies {
+            implementation(libs.kotlinxCoroutinesCore)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(libs.viewModel)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(libs.kotlinCoroutinesTest)
-                implementation(libs.mockkCommon)
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.kotlinCoroutinesTest)
+            implementation(libs.mockkCommon)
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.viewModel)
-                implementation(libs.liveData)
-            }
-        }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(libs.mockk)
-            }
-        }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
+        androidUnitTest.dependencies {
+            implementation(libs.mockk)
         }
     }
 }
