@@ -27,6 +27,8 @@ import com.mecofarid.summy.features.game.presentation.GameViewModel
 import com.mecofarid.summy.features.game.utils.MINUTE_SECOND_PATTERN
 import com.mecofarid.summy.common.view.resources.AppTheme
 import com.mecofarid.summy.common.view.resources.Dimens
+import com.mecofarid.yarus.ads.google.banner.BannerAd
+import com.mecofarid.yarus.ads.google.banner.BannerAdSize
 import org.jetbrains.compose.resources.painterResource
 import summy.shared.generated.resources.Res
 import summy.shared.generated.resources.ic_privacy
@@ -45,6 +47,7 @@ fun GameScreen(
             gameplay = gameplay.collectAsStateWithLifecycle().value,
             gameProgress = gameProgress.collectAsStateWithLifecycle().value,
             elapseTime = timeTicker.collectAsStateWithLifecycle().value,
+            bannerAdUnitId = bannerAdUnitId.collectAsStateWithLifecycle().value,
             onAdd = { onAdd(it) },
             onRestartGame = { restartGame() },
             onHandleUrl = onHandleUrl
@@ -58,6 +61,7 @@ fun GameScreenContent(
     gameplay: Gameplay,
     gameProgress: GameProgress,
     elapseTime: Long,
+    bannerAdUnitId: String?,
     onAdd: (Int) -> Unit,
     onRestartGame: () -> Unit,
     onHandleUrl: (String) -> Unit
@@ -65,8 +69,18 @@ fun GameScreenContent(
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
+        bannerAdUnitId?.let {
+            BannerAd(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = Dimens.gu_2),
+                adUnitId = bannerAdUnitId,
+                adSize = BannerAdSize.Standard.BANNER,
+            )
+        }
+
         Column(
             modifier = Modifier
                 .weight(1f)

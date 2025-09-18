@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mecofarid.summy.app.appComponent
 import com.mecofarid.summy.features.game.data.query.GameplayQuery
+import com.mecofarid.summy.features.game.data.repository.GetAdUnitIdRepository
 import com.mecofarid.summy.features.game.domain.interactor.GetGameStateInteractor
 import com.mecofarid.summy.features.game.domain.interactor.GetGameplayInteractor
 import com.mecofarid.summy.features.game.domain.model.GameProgress
@@ -29,15 +30,17 @@ private const val ADDEND_MAX_MULTIPLIER = 9
 
 class GameViewModel(
     private val getGameplayInteractor: GetGameplayInteractor,
-    private val getGameStateInteractor: GetGameStateInteractor
+    private val getGameStateInteractor: GetGameStateInteractor,
+    private val getAdUnitIdRepository: GetAdUnitIdRepository,
 ) : ViewModel() {
 
     companion object {
         val Factory: () -> GameViewModel = {
             with(appComponent.gameComponent) {
                 GameViewModel(
-                    getGameplayInteractor(),
-                    getGamepStateInteractor()
+                    getGameplayInteractor = getGameplayInteractor(),
+                    getGameStateInteractor = getGamepStateInteractor(),
+                    getAdUnitIdRepository = GetAdUnitIdRepository(),
                 )
             }
         }
@@ -51,6 +54,7 @@ class GameViewModel(
     val timeTicker: StateFlow<Long> = internalTimeTicker
     private val internalScreenState = MutableStateFlow<ScreenState>(ScreenState.Running)
     val screenState: StateFlow<ScreenState> = internalScreenState
+    val bannerAdUnitId: StateFlow<String?> = MutableStateFlow(getAdUnitIdRepository.getAdUnitId())
 
     private var timeTickerJob: Job? = null
     private var gameJob: Job? = null

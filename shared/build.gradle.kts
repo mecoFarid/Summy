@@ -40,6 +40,8 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(libs.viewModel)
+            implementation(libs.yarus.ads.google)
+            api(libs.yarus.client.core)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

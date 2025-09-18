@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.platform.LocalUriHandler
 import com.mecofarid.summy.app.App
+import com.mecofarid.yarus.core.platform.PlatformConfig
 
 class MainActivity : ComponentActivity() {
 
@@ -13,6 +14,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val urlHandler = LocalUriHandler.current
             App(
+                platformConfig = PlatformConfig(activity = this),
                 onHandleUrl = {
                     urlHandler.openUri(it)
                 }
