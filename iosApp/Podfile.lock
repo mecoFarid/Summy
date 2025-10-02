@@ -2,7 +2,7 @@ PODS:
   - Google-Mobile-Ads-SDK (12.11.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.0.0)
-  - shared (1.1)
+  - shared (1.2)
 
 DEPENDENCIES:
   - Google-Mobile-Ads-SDK
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: b833c723759e32bbaf06edaaf2293f08ed898232
   GoogleUserMessagingPlatform: f8d0cdad3ca835406755d0a69aa634f00e76d576
-  shared: d43c100443cbf810421128ad310e8e563450dfac
+  shared: c69b359faf2de97e265c9e675bfa291a02cfe495
 
 PODFILE CHECKSUM: 380b3f12c7e3b4b9db4f6b2faf5350b4f4fe93bc
 
