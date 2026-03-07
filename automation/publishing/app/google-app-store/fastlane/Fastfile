@@ -1,0 +1,110 @@
+# DO NOT MODIFY. This is a generated file.
+
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+require 'base64'
+
+default_platform(:android)
+
+platform(:android) do
+  desc "Release app"
+  lane :release do |options|
+    generate_app()
+
+    targets = options[:targets] ? options[:targets].split(',') : []
+
+    if targets.include?("github")
+      github_release(upload_assets: [lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]])
+    end
+
+    if targets.include?("playstore")
+      release_to_play_store(aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH])
+    end
+  end
+end
+
+desc "Build app"
+private_lane :generate_app do
+  with_temporary_file(
+    file_name: "keystore.jks",
+    encoded_content: ENV["KEYSTORE_CONTENT"],
+  ) do |file_full_path|
+    gradle_task(
+        tasks: ["assembleRelease", "bundleRelease"],
+        properties: {
+          "android.injected.signing.store.file" => file_full_path,
+          "android.injected.signing.store.password" => ENV["SIGNING_STORE_PASSWORD"],
+          "android.injected.signing.key.alias" => ENV["SIGNING_KEY_ALIAS"],
+          "android.injected.signing.key.password" => ENV["SIGNING_KEY_PASSWORD"]
+        }
+      )
+  end
+end
+
+desc "Release to GitHub"
+private_lane :github_release do |params|
+  git_url = Actions.sh("git remote get-url origin", log: false).chomp
+  repository_name = git_url[%r{github\.com[:/](?<slug>[^/]+/[^/.]+)}, :slug]
+
+  set_github_release(
+    repository_name: repository_name,
+    api_token: ENV["GTHB_PERSONAL_TOKEN"],
+    tag_name: last_git_tag,
+    upload_assets: params[:upload_assets]
+  )
+end
+
+desc "Release app to Play Store"
+private_lane :release_to_play_store do |params|
+  service_account_key_data = Base64.decode64(ENV["SERVICE_ACCOUNT_KEY_CONTENT"])
+  upload_to_play_store(
+    track: "production",
+    rollout: "1",
+    aab: params[:aab],
+    json_key_data: service_account_key_data,
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+end
+
+desc "Run tasks on directory where gradlew is located"
+private_lane :gradle_task do |params|
+  gradle(
+    tasks: params[:tasks],
+    properties: params[:properties],
+    project_dir: '../../../../'
+  )
+end
+
+desc "Generates a temporary file from given base64 content and provides its full path to the caller, then deletes the temporary file once the block finishes execution"
+def with_temporary_file(file_name:, encoded_content:)
+    content = Base64.decode64(encoded_content)
+
+    file_full_path = nil
+    File.open(file_name, 'wb') do |file|
+      file.write(content)
+      file_full_path = File.expand_path(file.path)
+    end
+
+    begin
+      yield(file_full_path)
+    ensure
+      File.delete(file_full_path) if file_full_path && File.exist?(file_full_path)
+    end
+end

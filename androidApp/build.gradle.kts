@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.yarus.publishing.googleappstore)
 }
 
 android {

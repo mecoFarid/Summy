@@ -3,6 +3,13 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/mecoFarid/Yarus")
+            credentials {
+                username = "mecoFarid"
+                password = System.getenv("GTHB_PERSONAL_TOKEN")
+            }
+        }
     }
 }
 

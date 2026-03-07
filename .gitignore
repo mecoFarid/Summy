@@ -41,6 +41,7 @@ build/
 local.properties
 project.properties
 release.properties
+.envrc
 
 # Eclipse project files
 .classpath

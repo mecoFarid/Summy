@@ -13,16 +13,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-      - run: |
-          chmod +x deployment.sh
-          ./deployment.sh \
-          -a ${{ secrets.GTHB_PERSONAL_TOKEN }} \
-          -b "${{ secrets.SIGNING_STORE_PASSWORD }}" \
-          -c "${{ secrets.SIGNING_KEY_PASSWORD }}" \
-          -d "${{ secrets.SIGNING_KEY_ALIAS }}" \
-          -e ${{ secrets.KEYSTORE_CONTENT_ENCODED }} \
-          -f "${{ secrets.APP_PUBLISHER_ANDROID_KEY_CONTENT_ENCODED }}"
-        working-directory: automation/scripts
+      - run: fastlane release targets:github,playstore
+        env:
+          GTHB_PERSONAL_TOKEN: ${{ secrets.GTHB_PERSONAL_TOKEN }}
+          SERVICE_ACCOUNT_KEY_CONTENT: ${{ secrets.APP_PUBLISHER_ANDROID_KEY_CONTENT_ENCODED }}
+          KEYSTORE_CONTENT: ${{ secrets.KEYSTORE_CONTENT_ENCODED }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          GTHB_USERNAME: ${{ secrets.GTHB_USERNAME }}
+          GTHB_PASSWORD: ${{ secrets.GTHB_PASSWORD }}
+        working-directory: automation/publishing/app/google-app-store

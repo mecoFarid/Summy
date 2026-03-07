@@ -9,6 +9,7 @@ plugins {
     id(libs.plugins.detekt.get().toString()).version(libs.versions.detekt.get())
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.yarus.publishing.googleappstore) apply false
 }
 
 subprojects {
