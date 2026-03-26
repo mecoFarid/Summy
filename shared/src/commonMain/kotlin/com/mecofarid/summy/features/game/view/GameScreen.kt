@@ -27,19 +27,16 @@ import com.mecofarid.summy.features.game.presentation.GameViewModel
 import com.mecofarid.summy.features.game.utils.MINUTE_SECOND_PATTERN
 import com.mecofarid.summy.common.view.resources.AppTheme
 import com.mecofarid.summy.common.view.resources.Dimens
-import com.mecofarid.yarus.ads.google.banner.BannerAd
-import com.mecofarid.yarus.ads.google.banner.BannerAdSize
+import com.mecofarid.yarus.ads.google.ads.banner.BannerAd
+import com.mecofarid.yarus.ads.google.ads.banner.BannerAdSize
 import org.jetbrains.compose.resources.painterResource
 import summy.shared.generated.resources.Res
 import summy.shared.generated.resources.ic_privacy
 
-private const val URL_PRIVACY_POLICY =
-    "http://htmlpreview.github.io/?https://github.com/mecoFarid/Summy/blob/main/legal/privacy_policy.html"
-
 @Composable
 fun GameScreen(
     gameViewModel: GameViewModel,
-    onHandleUrl: (String) -> Unit
+    onShowPrivacyOptions: () -> Unit
 ) {
     gameViewModel.apply {
         GameScreenContent(
@@ -48,9 +45,10 @@ fun GameScreen(
             gameProgress = gameProgress.collectAsStateWithLifecycle().value,
             elapseTime = timeTicker.collectAsStateWithLifecycle().value,
             bannerAdUnitId = bannerAdUnitId.collectAsStateWithLifecycle().value,
+            showPrivacyOptionsButton = showPrivacyOptionButton.collectAsStateWithLifecycle().value,
             onAdd = { onAdd(it) },
             onRestartGame = { restartGame() },
-            onHandleUrl = onHandleUrl
+            onShowPrivacyOptions = onShowPrivacyOptions
         )
     }
 }
@@ -62,9 +60,10 @@ fun GameScreenContent(
     gameProgress: GameProgress,
     elapseTime: Long,
     bannerAdUnitId: String?,
+    showPrivacyOptionsButton: Boolean,
     onAdd: (Int) -> Unit,
     onRestartGame: () -> Unit,
-    onHandleUrl: (String) -> Unit
+    onShowPrivacyOptions: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -126,32 +125,35 @@ fun GameScreenContent(
                 }
             }
 
-            if (screenState.isGameCompleted())
+            if (screenState.isGameCompleted()) {
                 GameResultDialog(
                     onRestartGame = onRestartGame,
                     gameResult = screenState as GameViewModel.ScreenState.Completed
                 )
+            }
         }
 
-        Image(
-            modifier = Modifier
-                .padding(bottom = Dimens.gu_2)
-                .clickable {
-                    onHandleUrl(URL_PRIVACY_POLICY)
-                }
-                .clip(
-                    RoundedCornerShape(
-                        topEnd = Dimens.gu_14,
-                        bottomEnd = Dimens.gu_14
+        if (showPrivacyOptionsButton){
+            Image(
+                modifier = Modifier
+                    .padding(bottom = Dimens.gu_2)
+                    .clickable {
+                        onShowPrivacyOptions()
+                    }
+                    .clip(
+                        RoundedCornerShape(
+                            topEnd = Dimens.gu_14,
+                            bottomEnd = Dimens.gu_14
+                        )
                     )
-                )
-                .background(AppTheme.colorScheme.gameplayPad)
-                .padding(Dimens.gu)
-                .size(Dimens.gu_3),
-            painter = painterResource(resource = Res.drawable.ic_privacy),
-            colorFilter = ColorFilter.tint(AppTheme.colorScheme.gameplayIndicatorText),
-            contentDescription = null
-        )
+                    .background(AppTheme.colorScheme.gameplayPad)
+                    .padding(Dimens.gu)
+                    .size(Dimens.gu_3),
+                painter = painterResource(resource = Res.drawable.ic_privacy),
+                colorFilter = ColorFilter.tint(AppTheme.colorScheme.gameplayIndicatorText),
+                contentDescription = null
+            )
+        }
     }
 }
 

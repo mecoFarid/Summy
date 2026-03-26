@@ -12,12 +12,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val urlHandler = LocalUriHandler.current
             App(
                 platformConfig = PlatformConfig(activity = this),
-                onHandleUrl = {
-                    urlHandler.openUri(it)
-                }
             )
         }
     }

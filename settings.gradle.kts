@@ -3,6 +3,7 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        mavenLocal()
         maven {
             url = uri("https://maven.pkg.github.com/mecoFarid/Yarus")
             credentials {
@@ -17,6 +18,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
         maven {
             url = uri("https://maven.pkg.github.com/mecoFarid/Yarus")
             credentials {

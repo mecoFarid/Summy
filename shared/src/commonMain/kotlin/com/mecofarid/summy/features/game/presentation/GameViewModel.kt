@@ -54,6 +54,8 @@ class GameViewModel(
     val timeTicker: StateFlow<Long> = internalTimeTicker
     private val internalScreenState = MutableStateFlow<ScreenState>(ScreenState.Running)
     val screenState: StateFlow<ScreenState> = internalScreenState
+    private val _showPrivacyOptionButton = MutableStateFlow(false)
+    val showPrivacyOptionButton: StateFlow<Boolean> = _showPrivacyOptionButton
     val bannerAdUnitId: StateFlow<String?> = MutableStateFlow(getAdUnitIdRepository.getAdUnitId())
 
     private var timeTickerJob: Job? = null
